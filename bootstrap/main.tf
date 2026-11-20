@@ -14,7 +14,7 @@ resource "azurerm_storage_account" "state" {
   min_tls_version                 = "TLS1_2"
   https_traffic_only_enabled      = true
   shared_access_key_enabled       = false
-  public_network_access_enabled   = true
+  public_network_access_enabled   = false
   allow_nested_items_to_be_public = false
   tags                            = var.tags
 
@@ -31,6 +31,16 @@ resource "azurerm_storage_account" "state" {
     }
     container_delete_retention_policy {
       days = 30
+    }
+  }
+
+  queue_properties {
+    logging {
+      delete                = true
+      read                  = true
+      write                 = true
+      version               = "1.0"
+      retention_policy_days = 30
     }
   }
 }

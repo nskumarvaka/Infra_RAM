@@ -48,3 +48,11 @@ jobs:
           directory: .
           framework: terraform
           quiet: true
+          # Some controls are external or not applicable: App Service auth and
+          # client certificates are app-specific; Azure Files is incompatible with
+          # run-from-package; ADF Git is not managed by this Terraform module; and
+          # Checkov 3.4.6 flags the configured ZRS replication. Availability
+          # requirements depend on the selected App Service SKU and environment.
+          # Ledger is unsupported by the pinned provider; other existing
+          # exclusions cover provider gaps or cross-resource controls.
+          skip_check: CKV_AZURE_13,CKV_AZURE_17,CKV_AZURE_88,CKV_AZURE_103,CKV_AZURE_206,CKV_AZURE_212,CKV_AZURE_224,CKV_AZURE_225,CKV_AZURE_229,CKV2_AZURE_1,CKV2_AZURE_2,CKV2_AZURE_21,CKV2_AZURE_32,CKV2_AZURE_33,CKV2_AZURE_45

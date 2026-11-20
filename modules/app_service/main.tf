@@ -118,6 +118,17 @@ resource "azurerm_linux_web_app" "frontend" {
     APPLICATIONINSIGHTS_CONNECTION_STRING = var.app_insights_connection_string
     WEBSITE_RUN_FROM_PACKAGE              = "1"
   })
+  logs {
+    detailed_error_messages = true
+    failed_request_tracing  = true
+
+    http_logs {
+      file_system {
+        retention_in_days = 7
+        retention_in_mb   = 35
+      }
+    }
+  }
   tags = var.tags
 
   identity {
@@ -129,6 +140,7 @@ resource "azurerm_linux_web_app" "frontend" {
     always_on                     = true
     ftps_state                    = "Disabled"
     health_check_path             = var.frontend_health_check_path
+    http2_enabled                 = true
     minimum_tls_version           = "1.2"
     ip_restriction_default_action = "Deny"
 
@@ -163,6 +175,17 @@ resource "azurerm_linux_web_app" "backend" {
     APPLICATIONINSIGHTS_CONNECTION_STRING = var.app_insights_connection_string
     WEBSITE_RUN_FROM_PACKAGE              = "1"
   })
+  logs {
+    detailed_error_messages = true
+    failed_request_tracing  = true
+
+    http_logs {
+      file_system {
+        retention_in_days = 7
+        retention_in_mb   = 35
+      }
+    }
+  }
   tags = var.tags
 
   identity {
@@ -174,6 +197,7 @@ resource "azurerm_linux_web_app" "backend" {
     always_on                     = true
     ftps_state                    = "Disabled"
     health_check_path             = var.backend_health_check_path
+    http2_enabled                 = true
     minimum_tls_version           = "1.2"
     ip_restriction_default_action = "Deny"
 

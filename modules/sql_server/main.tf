@@ -68,6 +68,7 @@ resource "azurerm_monitor_diagnostic_setting" "this" {
 resource "azurerm_mssql_server_extended_auditing_policy" "this" {
   server_id              = azurerm_mssql_server.this.id
   log_monitoring_enabled = true
+  retention_in_days      = 91
   audit_actions_and_groups = [
     "BATCH_COMPLETED_GROUP",
     "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",

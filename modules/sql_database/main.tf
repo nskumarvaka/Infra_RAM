@@ -50,7 +50,7 @@ resource "azurerm_mssql_database" "this" {
   server_id      = var.server_id
   sku_name       = var.sku_name
   collation      = "SQL_Latin1_General_CP1_CI_AS"
-  zone_redundant = false
+  zone_redundant = startswith(var.sku_name, "GP_") || startswith(var.sku_name, "BC_")
   tags           = var.tags
 
   short_term_retention_policy {

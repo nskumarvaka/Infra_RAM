@@ -73,6 +73,30 @@ resource "azurerm_subnet" "private_endpoints" {
   address_prefixes     = var.private_endpoint_subnet_prefixes
 }
 
+resource "azurerm_network_security_group" "app" {
+  name                = "nsg-${var.name}-app"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
+}
+
+resource "azurerm_network_security_group" "private_endpoints" {
+  name                = "nsg-${var.name}-private-endpoints"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
+}
+
+resource "azurerm_subnet_network_security_group_association" "app" {
+  subnet_id                 = azurerm_subnet.app.id
+  network_security_group_id = azurerm_network_security_group.app.id
+}
+
+resource "azurerm_subnet_network_security_group_association" "private_endpoints" {
+  subnet_id                 = azurerm_subnet.private_endpoints.id
+  network_security_group_id = azurerm_network_security_group.private_endpoints.id
+}
+
 resource "azurerm_private_dns_zone" "this" {
   for_each            = local.private_dns_zones
   name                = each.value
